@@ -14,6 +14,7 @@ import RetroList from './components/Retro/List.vue';
   <RetroList /> -->
     <EmployeeAdd />
   </div>
+  <RouterView />
 </template>
 
 <style></style>

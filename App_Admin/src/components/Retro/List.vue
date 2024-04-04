@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
+import api from '@/composables/api'
 
 // Biến để lưu trữ dữ liệu retros từ API
 const retros = ref([])
@@ -12,38 +13,19 @@ const totalPages = ref(1)
 // Hàm để gọi API và cập nhật retros và pageInfo
 const fetchData = async (page) => {
     try {
-        const response = await fetch(`http://localhost:8081/api/Retro?page=${page}`);
-        if (response.ok) {
-            const data = await response.json()
-            retros.value = data.content
-            isFirst.value = Boolean(data.first)
-            isLast.value = Boolean(data.last)
-            totalPages.value = Number(data.totalPages)
-        } else {
-            console.error('Failed to fetch data')
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error)
+        const res = await api.get(`http://localhost:8081/api/Retro?page=${page}`);
+        retros.value = res.data.content
+        isFirst.value = Boolean(res.data.first)
+        isLast.value = Boolean(res.data.last)
+        totalPages.value = Number(res.data.totalPages)
+    } catch (err) {
+        console.error('Error fetching data:', err.response)
     }
 }
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
     await fetchData(currentPage.value)
 })
-
-
-// Hàm để chuyển đến trang trước đó
-// const prevPage = async () => {
-//     if (isFirst.value) return
-//     currentPage.value -= 1
-//     await fetchData(currentPage.value)
-// }
-
-// const nextPage = async () => {
-//     if (isLast.value) return
-//     currentPage.value += 1
-//     await fetchData(currentPage.value)
-// }
 
 const setPage = async (pageNumb) => {
     currentPage.value = pageNumb
@@ -56,8 +38,7 @@ const setPage = async (pageNumb) => {
     <div>
         <div>LIST RETRO</div>
         <div class="mb-2">
-            <button @click="addRetro"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button @click="addRetro" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Add Retro
             </button>
         </div>
@@ -89,8 +70,7 @@ const setPage = async (pageNumb) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(retro, index) in retros" :key="index"
-                                    class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                <tr v-for="(retro, index) in retros" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index +
                 1
                                         }}</td>
@@ -106,10 +86,8 @@ const setPage = async (pageNumb) => {
             }}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        <button @click="editRetro(retro)"
-                                            class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                                        <button @click="deleteRetro(retro)"
-                                            class="text-red-600 hover:text-red-900">Delete</button>
+                                        <button @click="editRetro(retro)" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
+                                        <button @click="deleteRetro(retro)" class="text-red-600 hover:text-red-900">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>

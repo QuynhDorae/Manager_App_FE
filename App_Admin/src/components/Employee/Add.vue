@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue'
+import api from '@/composables/api'
 const newEmployee = reactive({
     username: null,
     password: null,
@@ -14,22 +15,12 @@ const roles = [
 // Hàm để gửi dữ liệu đến API
 async function submit() {
     try {
-        const response = await fetch('http://localhost:8081/api/User', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newEmployee)
-        })
-
-        if (!response.ok) throw new Error(`Error: ${response.statusText}`)
-        const responseData = await response.json()
+        const res = await api.post('/User', newEmployee)
         alert('Success')
-        console.log('Success:', responseData)
-        // Xử lý dữ liệu phản hồi ở đây
+        console.log('Success:', res.data)
     } catch (err) {
         alert('Error')
-        console.error('Error:', err)
+        console.error('Error:', err.response)
     }
 }
 

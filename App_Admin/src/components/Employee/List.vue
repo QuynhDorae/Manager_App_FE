@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-
+import api from '@/composables/api'
 const users = ref([])
 // Biến để lưu trữ thông tin phân trang
 const isLast = ref(false)
@@ -11,18 +11,13 @@ const totalPages = ref(1)
 // Hàm để gọi API và cập nhật users và pageInfo
 const fetchData = async (page) => {
     try {
-        const response = await fetch(`http://localhost:8081/api/User?page=${page}`);
-        if (response.ok) {
-            const data = await response.json()
-            users.value = data.content
-            isFirst.value = Boolean(data.first)
-            isLast.value = Boolean(data.last)
-            totalPages.value = Number(data.totalPages)
-        } else {
-            console.error('Failed to fetch data')
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error)
+        const res = await api.get(`/User?page=${page}`);
+        users.value = res.data.content
+        isFirst.value = Boolean(res.data.first)
+        isLast.value = Boolean(res.data.last)
+        totalPages.value = Number(res.data.totalPages)
+    } catch (err) {
+        console.error('Error fetching data:', err.response)
     }
 }
 // Gọi fetchData() khi component được mounted
@@ -39,8 +34,7 @@ const setPage = async (pageNumb) => {
 <template>
     <div>LIST EMPLOYEE</div>
     <div class="mb-2">
-        <button @click="addEmployee"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button @click="addEmployee" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Add Employee
         </button>
     </div>
@@ -72,8 +66,7 @@ const setPage = async (pageNumb) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(user, index) in users" :key="index"
-                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr v-for="(user, index) in users" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index +
             1
                                     }}</td>
@@ -89,10 +82,8 @@ const setPage = async (pageNumb) => {
                 user.role }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editUser(user)"
-                                        class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                                    <button @click="deleteUser(user)"
-                                        class="text-red-600 hover:text-red-900">Delete</button>
+                                    <button @click="editUser(user)" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
+                                    <button @click="deleteUser(user)" class="text-red-600 hover:text-red-900">Delete</button>
                                 </td>
 
                             </tr>

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import api from '@/composables/api'
 
 const projects = ref([])
 // Biến để lưu trữ thông tin phân trang
@@ -11,18 +12,13 @@ const totalPages = ref(1)
 // Hàm để gọi API và cập nhật projects và pageInfo
 const fetchData = async (page) => {
     try {
-        const response = await fetch(`http://localhost:8081/api/Project?page=${page}`);
-        if (response.ok) {
-            const data = await response.json()
-            projects.value = data.content
-            isFirst.value = Boolean(data.first)
-            isLast.value = Boolean(data.last)
-            totalPages.value = Number(data.totalPages)
-        } else {
-            console.error('Failed to fetch data')
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error)
+        const res = await api.get(`/Project?page=${page}`);
+        projects.value = res.data.content
+        isFirst.value = Boolean(res.data.first)
+        isLast.value = Boolean(res.data.last)
+        totalPages.value = Number(res.data.totalPages)
+    } catch (err) {
+        console.error('Error fetching data:', err.response)
     }
 }
 // Gọi fetchData() khi component được mounted
