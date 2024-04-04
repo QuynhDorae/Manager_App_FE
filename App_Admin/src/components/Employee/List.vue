@@ -27,8 +27,8 @@ const fetchProject = async () => {
     try {
         const res = await api.get('/Project/getall');
         projects.value = res.data; // Gán dữ liệu vào users
-    } catch (error) {
-        console.error('Error fetching data:', error);
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
     }
 }
 
@@ -38,15 +38,15 @@ const fetchUsersByProject = async (projectId) => {
         const res = await api.get(`/User/filter-project/${projectId}`);
         console.log(projectId)
         users.value = res.data;
-    } catch (error) {
-        console.error('Error fetching data:', error);
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
     }
 }
 
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(currentPage.value),
-        await fetchProject()
+    await fetchData(currentPage.value)
+    await fetchProject()
     //  await fetchUsersByProject(projectId)
 })
 // Lắng nghe sự kiện thay đổi của project và gọi hàm fetchUsersByProject

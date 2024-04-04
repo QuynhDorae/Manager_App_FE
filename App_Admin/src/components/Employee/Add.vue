@@ -1,7 +1,6 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import api from '@/composables/api'
-import axios from 'axios'
 const newEmployee = reactive({
     username: null,
     password: null,

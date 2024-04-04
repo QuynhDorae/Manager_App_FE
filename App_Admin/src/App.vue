@@ -12,13 +12,13 @@ import RetroList from './components/Retro/List.vue';
   <div class="container mx-auto">
     <!-- <EmployeeList /> -->
     <!-- <ProjectList /> -->
-    <ReviewList />
+    <!-- <ReviewList /> -->
     <!-- <RetroList /> -->
     <!-- <EmployeeAdd /> -->
-    <!-- <ProjectAdd /> -->
+    <ProjectAdd />
     <!-- <RetroAdd /> -->
   </div>
-  <RouterView />
+  <!-- <RouterView /> -->
 </template>
 
 <style></style>

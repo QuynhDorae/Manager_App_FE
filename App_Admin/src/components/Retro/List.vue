@@ -71,23 +71,28 @@ const setPage = async (pageNumb) => {
                             </thead>
                             <tbody>
                                 <tr v-for="(retro, index) in retros" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index +
-                                        1
-                                        }}</td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ retro.name }}</td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                        retro.project.name }}</td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ retro.startDate
-                                        }}</td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                        retro.endDate
-            }}
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ index + 1 }}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        <button @click="editRetro(retro)" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                                        <button @click="deleteRetro(retro)" class="text-red-600 hover:text-red-900">Delete</button>
+                                        {{ retro.name }}
+                                    </td>
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ retro.project?.name }}
+                                    </td>
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ retro.startDate }}
+                                    </td>
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ retro.endDate }}
+                                    </td>
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        <button @click="editRetro(retro)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                            Edit
+                                        </button>
+                                        <button @click="deleteRetro(retro)" class="text-red-600 hover:text-red-900">
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -98,11 +103,15 @@ const setPage = async (pageNumb) => {
         </div>
         <!-- Phân trang -->
         <div class="pagination">
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded"
-                @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
-            <span>{{ currentPage }} of {{ totalPages }}</span>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded"
-                @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
+            <button @click="setPage(currentPage - 1)" :disabled="isFirst" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
+                Previous
+            </button>
+            <span>
+                {{ currentPage }} of {{ totalPages }}
+            </span>
+            <button @click="setPage(currentPage + 1)" :disabled="isLast" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded">
+                Next
+            </button>
         </div>
 
     </div>

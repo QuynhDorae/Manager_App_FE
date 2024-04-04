@@ -1,69 +1,74 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, reactive, onMounted } from 'vue'
+import api from '@/composables/api'
 
 // Mảng chứa các role cứng
-const roles = ref([
+const roles = [
     { value: 'BA' },
     { value: 'TESTER' },
     { value: 'DEV' },
     { value: 'DA' },
     { value: 'DESIGN' },
+]
+const users = ref([
+    { id: 123 }, { id: 321 }
 ])
-const users = ref([])
-const project = ref({
-    name: '',
-    description: ''
+const newProject = reactive({
+    name: null,
+    description: null
 })
-const selectedUsers = ref([]) // mảng user truyền vào
-const selectedRole = ref('') // Biến để lưu trữ role được chọn
+const selected = reactive({
+    users: [],
+    role: null
+}) // mảng user truyền vào
 const fetchData = async () => {
     try {
-        const response = await axios.get('http://localhost:8081/api/User/getall');
-        users.value = response.data; // Gán dữ liệu vào users
-    } catch (error) {
-        console.error('Error fetching data:', error);
+        const res = await api.get('/User/getall');
+        users.value = res.data; // Gán dữ liệu vào users
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
     }
 }
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
     await fetchData();
 });
-const submitForm = async () => {
+const submit = async () => {
     const projectData = {
-        project: { name: project.value.name, description: project.value.description },
-        role: selectedRole.value,
-        users: [{ id: selectedUsers.value }],
+        project: newProject,
+        role: selected.role,
+        users: [ { id: selected.users } ],
     }
-    console.log(projectData.users)
+    // console.log(projectData.users)
     try {
-        await axios.post('http://localhost:8081/api/Project/', projectData)
+        await api.post('/Project/', projectData)
         alert("add project thành công")
-        projectName.value = ''
-        projectDescription.value = ''
-        selectedRole.value = null
-        selectedUsers.value = []
-    } catch (error) {
-
+        newProject.name = ''
+        newProject.description = ''
+        selected.role = null
+        selected.users = []
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
     }
 }
 </script>
 <template>
-    <form>
+    <form @submit.prevent="submit">
         <div class="mb-5">
-            <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Chọn role
+            <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                Chọn role
             </label>
-            <select id="dropdown" v-model="selectedRole"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="selected.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="role in roles" :key="role.value" :value="role.value">
                     {{ role.value }}
                 </option>
             </select>
-            <label for="userDropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Chọn user
+            <label for="userDropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                Chọn user
             </label>
-            <select id="userDropdown" v-model="selectedUsers" :multiple
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            {{ selected.users }}
+            <select id="userDropdown" v-model="selected.users" :multiple="true" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.username }}
@@ -72,24 +77,19 @@ const submitForm = async () => {
         </div>
         <div class="mb-6">
             <label for="usernameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                Name</label>
-            <input type="text" id="projectNameInput" v-model="project.name"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="">
+                Name
+            </label>
+            <input type="text" id="projectNameInput" v-model="newProject.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="">
         </div>
         <div class="mb-6">
-            <label for="usernameInput"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Description
+            <label for="usernameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                Description
             </label>
-            <input type="text" id="projectDescriptionInput" v-model="project.description"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="">
+            <input type="text" id="projectDescriptionInput" v-model="newProject.description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="">
         </div>
         <!-- Thêm mỗi input khác một id duy nhất và sử dụng v-model -->
         <div class="flex items-center justify-between">
-            <button @click="submitForm"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Save
             </button>
         </div>

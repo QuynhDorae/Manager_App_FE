@@ -25,6 +25,7 @@ const fetchData = async (page) => {
 onMounted(async () => {
     await fetchData(currentPage.value)
 })
+
 const setPage = async (pageNumb) => {
     currentPage.value = pageNumb
     await fetchData(currentPage.value)
@@ -35,8 +36,7 @@ const setPage = async (pageNumb) => {
 <template>
     <div>LIST PROJECT</div>
     <div class="mb-2">
-        <button @click="addProject"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button @click="addProject" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Add Project
         </button>
     </div>
@@ -71,29 +71,32 @@ const setPage = async (pageNumb) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(project, index) in projects" :key="index"
-                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index + 1
-                                    }}</td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    project.name }}</td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    project.description
-                                    }}</td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    project.userName
-                                    }}</td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    project.role
-                                    }}</td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    project.status
-                                    }}</td>
+                            <tr v-for="(project, index) in projects" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ index + 1 }}
+                                </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editProject(project)"
-                                        class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                                    <button @click="deleteProject(project)"
-                                        class="text-red-600 hover:text-red-900">Delete</button>
+                                    {{ project.name }}
+                                </td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {{ project.description }}
+                                </td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {{ project.userName }}
+                                </td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {{ project.role }}
+                                </td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {{ project.status }}
+                                </td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <button @click="editProject(project)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                        Edit
+                                    </button>
+                                    <button @click="deleteProject(project)" class="text-red-600 hover:text-red-900">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -103,11 +106,13 @@ const setPage = async (pageNumb) => {
         </div>
         <!-- Phân trang -->
         <div class="pagination">
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded"
-                @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
+            <button @click="setPage(currentPage - 1)" :disabled="isFirst" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
+                Previous
+            </button>
             <span>{{ currentPage }} of {{ totalPages }}</span>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded"
-                @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
+            <button @click="setPage(currentPage + 1)" :disabled="isLast" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded">
+                Next
+            </button>
         </div>
     </div>
 </template>

@@ -23,7 +23,7 @@ const fetchData = async (page) => {
         isLast.value = Boolean(res.data.last)
         totalPages.value = Number(res.data.totalPages)
     } catch (err) {
-        console.error('Error fetching data:', err.res)
+        console.error('Error fetching data:', err.response)
     }
 }
 
