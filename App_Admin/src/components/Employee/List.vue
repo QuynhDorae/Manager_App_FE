@@ -1,4 +1,5 @@
 <script setup>
+import axios from 'axios';
 import { ref, onMounted } from 'vue'
 
 const users = ref([])
@@ -11,7 +12,7 @@ const totalPages = ref(1)
 // Hàm để gọi API và cập nhật users và pageInfo
 const fetchData = async (page) => {
     try {
-        const response = await fetch(`http://localhost:8081/api/User?page=${page}`);
+        const response = await axios(`http://localhost:8081/api/User?page=${page}`);
         if (response.ok) {
             const data = await response.json()
             users.value = data.content
