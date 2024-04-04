@@ -72,17 +72,17 @@ const setPage = async (pageNumb) => {
                             <tbody>
                                 <tr v-for="(retro, index) in retros" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index +
-                1
+                                        1
                                         }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ retro.name }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                retro.project.name }}</td>
+                                        retro.project.name }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ retro.startDate
                                         }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                retro.endDate
+                                        retro.endDate
             }}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -98,9 +98,11 @@ const setPage = async (pageNumb) => {
         </div>
         <!-- Phân trang -->
         <div class="pagination">
-            <button @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded"
+                @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
+            <span>{{ currentPage }} of {{ totalPages }}</span>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded"
+                @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
         </div>
 
     </div>
