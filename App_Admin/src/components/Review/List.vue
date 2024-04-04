@@ -85,7 +85,7 @@ const setPage = async (pageNumb) => {
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ review.nameUserReviewer }}</td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    review.nameRetro }}</td>
+            review.nameRetro }}</td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ review.nameUserReviewee
                                     }}</td>
@@ -93,12 +93,12 @@ const setPage = async (pageNumb) => {
                                     }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    review.comment
-                                    }}
+            review.comment
+        }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    review.reviewDate
-                                    }}
+                review.reviewDate
+            }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     <button @click="editReview(review)"
@@ -114,9 +114,11 @@ const setPage = async (pageNumb) => {
         </div>
         <!-- Phân trang -->
         <div class="pagination">
-            <button @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded"
+                @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
+            <span>{{ currentPage }} of {{ totalPages }}</span>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded"
+                @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
         </div>
     </div>
 </template>
