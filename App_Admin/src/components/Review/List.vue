@@ -2,20 +2,38 @@
 import { ref, onMounted } from 'vue'
 
 const reviews = ref([])
+// Biến để lưu trữ thông tin phân trang
+const isLast = ref(false)
+const isFirst = ref(true)
+const currentPage = ref(1)
+const totalPages = ref(1)
 
-onMounted(async () => {
+// Hàm để gọi API và cập nhật reviews và pageInfo
+const fetchData = async (page) => {
     try {
-        const response = await fetch('http://localhost:8081/api/Review')
+        const response = await fetch(`http://localhost:8081/api/Review?page=${page}`);
         if (response.ok) {
             const data = await response.json()
-            reviews.value = data
+            reviews.value = data.content
+            isFirst.value = Boolean(data.first)
+            isLast.value = Boolean(data.last)
+            totalPages.value = Number(data.totalPages)
         } else {
             console.error('Failed to fetch data')
         }
     } catch (error) {
         console.error('Error fetching data:', error)
     }
+}
+// Gọi fetchData() khi component được mounted
+onMounted(async () => {
+    await fetchData(currentPage.value)
 })
+
+const setPage = async (pageNumb) => {
+    currentPage.value = pageNumb
+    await fetchData(currentPage.value)
+}
 </script>
 
 <template>
@@ -78,6 +96,12 @@ onMounted(async () => {
                     </table>
                 </div>
             </div>
+        </div>
+        <!-- Phân trang -->
+        <div class="pagination">
+            <button @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
         </div>
     </div>
 </template>

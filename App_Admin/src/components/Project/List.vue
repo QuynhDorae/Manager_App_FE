@@ -2,20 +2,38 @@
 import { ref, onMounted } from 'vue'
 
 const projects = ref([])
+// Biến để lưu trữ thông tin phân trang
+const isLast = ref(false)
+const isFirst = ref(true)
+const currentPage = ref(1)
+const totalPages = ref(1)
 
-onMounted(async () => {
+// Hàm để gọi API và cập nhật projects và pageInfo
+const fetchData = async (page) => {
     try {
-        const response = await fetch('http://localhost:8081/api/Project')
+        const response = await fetch(`http://localhost:8081/api/Project?page=${page}`);
         if (response.ok) {
             const data = await response.json()
-            projects.value = data
+            projects.value = data.content
+            isFirst.value = Boolean(data.first)
+            isLast.value = Boolean(data.last)
+            totalPages.value = Number(data.totalPages)
         } else {
             console.error('Failed to fetch data')
         }
     } catch (error) {
         console.error('Error fetching data:', error)
     }
+}
+// Gọi fetchData() khi component được mounted
+onMounted(async () => {
+    await fetchData(currentPage.value)
 })
+const setPage = async (pageNumb) => {
+    currentPage.value = pageNumb
+    await fetchData(currentPage.value)
+}
+
 </script>
 
 <template>
@@ -36,6 +54,15 @@ onMounted(async () => {
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     Description
                                 </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    User Name
+                                </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    Role
+                                </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    Status
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,15 +71,30 @@ onMounted(async () => {
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index + 1
                                     }}</td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                project.name }}</td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ project.description
+                                    project.name }}</td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
+                                    project.description
                                     }}</td>
-
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
+                                    project.userName
+                                    }}</td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
+                                    project.role
+                                    }}</td>
+                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
+                                    project.status
+                                    }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
+        <!-- Phân trang -->
+        <div class="pagination">
+            <button @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="setPage(currentPage +1)" :disabled="isLast">Next</button>
         </div>
     </div>
 </template>

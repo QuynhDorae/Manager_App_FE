@@ -2,20 +2,38 @@
 import { ref, onMounted } from 'vue'
 
 const users = ref([])
+// Biến để lưu trữ thông tin phân trang
+const isLast = ref(false)
+const isFirst = ref(true)
+const currentPage = ref(1)
+const totalPages = ref(1)
 
-onMounted(async () => {
+// Hàm để gọi API và cập nhật users và pageInfo
+const fetchData = async (page) => {
     try {
-        const response = await fetch('http://localhost:8081/api/User')
+        const response = await fetch(`http://localhost:8081/api/User?page=${page}`);
         if (response.ok) {
             const data = await response.json()
-            users.value = data
+            users.value = data.content
+            isFirst.value = Boolean(data.first)
+            isLast.value = Boolean(data.last)
+            totalPages.value = Number(data.totalPages)
         } else {
             console.error('Failed to fetch data')
         }
     } catch (error) {
         console.error('Error fetching data:', error)
     }
+}
+// Gọi fetchData() khi component được mounted
+onMounted(async () => {
+    await fetchData(currentPage.value)
 })
+const setPage = async (pageNumb) => {
+    currentPage.value = pageNumb
+    await fetchData(currentPage.value)
+}
+
 </script>
 
 <template>
@@ -50,7 +68,7 @@ onMounted(async () => {
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index + 1
                                     }}</td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                user.username }}</td>
+                                    user.username }}</td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ user.email
                                     }}</td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ user.project
@@ -63,12 +81,16 @@ onMounted(async () => {
                 </div>
             </div>
         </div>
+        <!-- Phân trang -->
+        <div class="pagination">
+            <button @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
+        </div>
     </div>
 </template>
 
 <style scoped>
-
-
 /* Bổ sung CSS để làm cho bảng to hơn */
 table {
     width: 100%;

@@ -109,6 +109,7 @@ const setPage = async (pageNumb) => {
             <span>Page {{ currentPage }} of {{ totalPages }}</span>
             <button @click="setPage(currentPage +1)" :disabled="isLast">Next</button>
         </div>
+        
     </div>
 </template>
 
