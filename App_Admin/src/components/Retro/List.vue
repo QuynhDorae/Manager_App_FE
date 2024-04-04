@@ -55,6 +55,12 @@ const setPage = async (pageNumb) => {
 <template>
     <div>
         <div>LIST RETRO</div>
+        <div class="mb-2">
+            <button @click="addRetro"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Add Retro
+            </button>
+        </div>
         <div class="flex flex-col">
             <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
                 <div class="py-2 inline-block w-full sm:px-6 lg:px-8">
@@ -77,24 +83,33 @@ const setPage = async (pageNumb) => {
                                     <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                         End Date
                                     </th>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        Action
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(retro, index) in retros" :key="index"
                                     class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index +
-                                    1
+                1
                                         }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ retro.name }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    retro.project.name }}</td>
+                retro.project.name }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ retro.startDate
                                         }}</td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{
-                                    retro.endDate
-                                }}
+                retro.endDate
+            }}
+                                    </td>
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        <button @click="editRetro(retro)"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
+                                        <button @click="deleteRetro(retro)"
+                                            class="text-red-600 hover:text-red-900">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -107,9 +122,9 @@ const setPage = async (pageNumb) => {
         <div class="pagination">
             <button @click="setPage(currentPage - 1)" :disabled="isFirst">Previous</button>
             <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="setPage(currentPage +1)" :disabled="isLast">Next</button>
+            <button @click="setPage(currentPage + 1)" :disabled="isLast">Next</button>
         </div>
-        
+
     </div>
 </template>
 
