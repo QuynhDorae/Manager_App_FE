@@ -1,4 +1,5 @@
 <script setup>
+import 'uno.css'
 import EmployeeList from './components/Employee/List.vue';
 import EmployeeAdd from './components/Employee/Add.vue';
 import ProjectAdd from './components/Project/Add.vue';
