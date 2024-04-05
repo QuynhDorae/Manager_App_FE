@@ -2,11 +2,8 @@
 import { ref, onMounted } from 'vue'
 import api from '@/composables/api'
 const reviews = ref([])
-const projects = ref([])
-const project = ref(null)
 const users = ref([])
 const user = ref(null)
-const date = ref(null)
 
 // Biến để lưu trữ thông tin phân trang
 const isLast = ref(false)
@@ -15,7 +12,7 @@ const currentPage = ref(1)
 const totalPages = ref(1)
 
 // Hàm để gọi API và cập nhật reviews và pageInfo
-const fetchData = async (userId,page) => {
+const fetchData = async (userId, page) => {
     try {
         const res = await api.get(`/Review/getall-user/${userId}?page=${page}`);
         reviews.value = res.data.content
@@ -47,7 +44,7 @@ const fetchReviewByUser = async (userId) => {
 }
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(currentPage.value)
+    await fetchData(users.value, currentPage.value)
     await fetchUser()
 })
 
@@ -116,9 +113,9 @@ const setPage = async (pageNumb) => {
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     ReviewDate
                                 </th>
-                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                <!-- <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     Action
-                                </th>
+                                </th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -144,7 +141,7 @@ const setPage = async (pageNumb) => {
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ review.reviewDatex }}
                                 </td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                <!-- <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     <button @click="editReview(review)"
                                         class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
@@ -152,7 +149,7 @@ const setPage = async (pageNumb) => {
                                     <button @click="deleteReview(review)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>

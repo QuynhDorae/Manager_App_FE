@@ -208,7 +208,7 @@ const setPage = async (pageNumb) => {
                                     {{ review.comment }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    {{ review.reviewDatex }}
+                                    {{ review.reviewDate }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     <button @click="editReview(review)"
