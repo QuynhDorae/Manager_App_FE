@@ -1,50 +1,48 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import api from '@/composables/api'
-
 const projects = ref([])
 // Biến để lưu trữ thông tin phân trang
-const isLast = ref(false)
-const isFirst = ref(true)
-const currentPage = ref(1)
-const totalPages = ref(1)
+const paginationData = reactive({
+    isFirst: true,
+    isLast: false,
+    totalPage: 1,
+    currentPage: 1
+})
 
 // Hàm để gọi API và cập nhật projects và pageInfo
-const fetchData = async (page) => {
+async function fetchData(page) {
     try {
         const res = await api.get(`/Project?page=${page}`);
         projects.value = res.data.content
-        isFirst.value = Boolean(res.data.first)
-        isLast.value = Boolean(res.data.last)
-        totalPages.value = Number(res.data.totalPages)
+
+        paginationData.currentPage = page
+        paginationData.isFirst = Boolean(res.data.first)
+        paginationData.isLast = Boolean(res.data.last)
+        paginationData.totalPages = Number(res.data.totalPages)
     } catch (err) {
         console.error('Error fetching data:', err.response)
     }
 }
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(currentPage.value)
+    await fetchData(paginationData.currentPage)
 })
-
-const setPage = async (pageNumb) => {
-    currentPage.value = pageNumb
-    await fetchData(currentPage.value)
-}
 
 </script>
 
 <template>
-    <div>LIST PROJECT</div>
+    <h1 class="text-lg uppercase">
+        LIST PROJECT
+    </h1>
     <div class="mb-2">
-        <button @click="addProject" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <NuxtLink :to="{ name: 'project-add' }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Add Project
-        </button>
+        </NuxtLink>
     </div>
     <div class="flex flex-col">
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
             <div class="py-2 inline-block w-full sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
-                    <table class="w-full">
+                    <table class="w-full border-collapse">
                         <thead class="bg-gray-200 border-b">
                             <tr>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -105,29 +103,6 @@ const setPage = async (pageNumb) => {
             </div>
         </div>
         <!-- Phân trang -->
-        <div class="pagination">
-            <button @click="setPage(currentPage - 1)" :disabled="isFirst" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
-                Previous
-            </button>
-            <span>{{ currentPage }} of {{ totalPages }}</span>
-            <button @click="setPage(currentPage + 1)" :disabled="isLast" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded">
-                Next
-            </button>
-        </div>
+        <Pagination v-bind="paginationData" @change="fetchData" />
     </div>
 </template>
-
-<style scoped>
-/* Bổ sung CSS để làm cho bảng to hơn */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-}
-</style>

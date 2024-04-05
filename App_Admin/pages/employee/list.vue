@@ -1,29 +1,31 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import api from '@/composables/api'
 const users = ref([])
 const projects = ref([])
 const project = ref(null)
 // Biến để lưu trữ thông tin phân trang
-const isLast = ref(false)
-const isFirst = ref(true)
-const currentPage = ref(1)
-const totalPages = ref(1)
+const paginationData = reactive({
+    isFirst: true,
+    isLast: false,
+    totalPage: 1,
+    currentPage: 1
+})
 
 // Hàm để gọi API và cập nhật users và pageInfo
-const fetchData = async (page) => {
+async function fetchData(page) {
     try {
         const res = await api.get(`/User?page=${page}`);
         users.value = res.data.content
-        isFirst.value = Boolean(res.data.first)
-        isLast.value = Boolean(res.data.last)
-        totalPages.value = Number(res.data.totalPages)
+        
+        paginationData.currentPage = page
+        paginationData.isFirst = Boolean(res.data.first)
+        paginationData.isLast = Boolean(res.data.last)
+        paginationData.totalPages = Number(res.data.totalPages)
     } catch (err) {
         console.error('Error fetching data:', err.response)
     }
 }
 //hàm lấy tất cả project
-const fetchProject = async () => {
+async function fetchProjects() {
     try {
         const res = await api.get('/Project/getall');
         projects.value = res.data; // Gán dữ liệu vào users
@@ -33,7 +35,7 @@ const fetchProject = async () => {
 }
 
 //hàm lấy user theo project
-const fetchUsersByProject = async (projectId) => {
+async function fetchUsersByProject(projectId) {
     try {
         const res = await api.get(`/User/filter-project/${projectId}`);
         console.log(projectId)
@@ -45,10 +47,11 @@ const fetchUsersByProject = async (projectId) => {
 
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(currentPage.value)
-    await fetchProject()
+    await fetchData(paginationData.currentPage)
+    await fetchProjects()
     //  await fetchUsersByProject(projectId)
 })
+
 // Lắng nghe sự kiện thay đổi của project và gọi hàm fetchUsersByProject
 const handleProjectChange = async () => {
     if (project.value) {
@@ -69,28 +72,23 @@ const deleteUser = async (userId) => {
     }
 }
 
-const setPage = async (pageNumb) => {
-    currentPage.value = pageNumb
-    await fetchData(currentPage.value)
-}
-
 </script>
 
 <template>
-    <div>LIST EMPLOYEE</div>
+    <h1 class="text-lg uppercase">
+        LIST EMPLOYEE
+    </h1>
     <div class="flex items-center justify-between mb-2">
         <div>
-            <button @click="addEmployee"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <NuxtLink :to="{ name: 'employee-add' }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Add Employee
-            </button>
+            </NuxtLink>
         </div>
         <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn Project
             </label>
-            <select id="dropdown" v-model="project" @change="handleProjectChange"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="project" @change="handleProjectChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="project in projects" :key="project.id" :value="project.id">
                     {{ project.name }}
@@ -103,7 +101,7 @@ const setPage = async (pageNumb) => {
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
             <div class="py-2 inline-block w-full sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
-                    <table class="w-full">
+                    <table class="w-full border-collapse">
                         <thead class="bg-gray-200 border-b">
                             <tr>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -127,8 +125,7 @@ const setPage = async (pageNumb) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(user, index) in users" :key="index"
-                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr v-for="(user, index) in users" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ index + 1 }}
                                 </td>
@@ -159,33 +156,6 @@ const setPage = async (pageNumb) => {
             </div>
         </div>
         <!-- Phân trang -->
-        <div class="pagination">
-            <button @click="setPage(currentPage - 1)" :disabled="isFirst"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
-                Previous
-            </button>
-            <span>
-                {{ currentPage }} of {{ totalPages }}
-            </span>
-            <button @click="setPage(currentPage + 1)" :disabled="isLast"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded">
-                Next
-            </button>
-        </div>
+        <Pagination v-bind="paginationData" @change="fetchData" />
     </div>
 </template>
-
-<style scoped>
-/* Bổ sung CSS để làm cho bảng to hơn */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-}
-</style>

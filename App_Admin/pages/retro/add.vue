@@ -1,7 +1,4 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import api from '@/composables/api'
-
 const projects = ref([])
 
 const newRetro = reactive({
@@ -11,7 +8,7 @@ const newRetro = reactive({
     endDate: null
 })
 
-const fetchData = async () => {
+async function fetchProjects() {
     try {
         const res = await api.get('/Project/getall');
         projects.value = res.data; // Gán dữ liệu vào users
@@ -19,10 +16,14 @@ const fetchData = async () => {
         console.error('Error fetching data:', err.response);
     }
 }
+
+
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData();
+    await fetchProjects();
 });
+
+
 const submit = async () => {
     try {
         await api.post('/Retro/', newRetro)
@@ -33,6 +34,9 @@ const submit = async () => {
 }
 </script>
 <template>
+    <h1 class="text-lg uppercase">
+        Add retro
+    </h1>
     <form @submit.prevent="submit">
         <div class="mb-5">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
@@ -69,5 +73,3 @@ const submit = async () => {
         </div>
     </form>
 </template>
-
-<style scoped></style>
