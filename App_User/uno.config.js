@@ -8,29 +8,29 @@ import {
     transformerDirectives,
     transformerVariantGroup
   } from 'unocss'
-  
-export default defineConfig({
+
+  export default defineConfig({
     shortcuts: [
-        // ...
+      // ...
     ],
     theme: {
-        colors: {
-            // ...
-        }
+      colors: {
+        // ...
+      }
     },
     presets: [
-        presetUno(),
-        presetAttributify(),
-        presetIcons(),
-        presetTypography(),
-        presetWebFonts({
-            fonts: {
-                // ...
-            },
-        }),
+      presetUno(),
+      presetAttributify(),
+      presetIcons(),
+      presetTypography(),
+      presetWebFonts({
+        fonts: {
+          // ...
+        },
+      }),
     ],
     transformers: [
-        transformerDirectives(),
-        transformerVariantGroup(),
+      transformerDirectives(),
+      transformerVariantGroup(),
     ],
-})
+  })
