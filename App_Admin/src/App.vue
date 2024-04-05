@@ -10,12 +10,12 @@ import RetroList from './components/Retro/List.vue';
 
 <template>
   <div class="container mx-auto">
-    <!-- <EmployeeList /> -->
+    <EmployeeList />
     <!-- <ProjectList /> -->
     <!-- <ReviewList /> -->
     <!-- <RetroList /> -->
     <!-- <EmployeeAdd /> -->
-    <ProjectAdd />
+    <!-- <ProjectAdd /> -->
     <!-- <RetroAdd /> -->
   </div>
   <!-- <RouterView /> -->

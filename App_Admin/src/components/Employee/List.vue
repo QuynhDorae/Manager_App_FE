@@ -58,6 +58,17 @@ const handleProjectChange = async () => {
         // await fetchData(currentPage.value);
     }
 }
+
+//xóa user
+const deleteUser = async (userId) => {
+    try {
+        const res = await api.delete(`/User/${userId}`);
+        users.value = res.data;
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
+    }
+}
+
 const setPage = async (pageNumb) => {
     currentPage.value = pageNumb
     await fetchData(currentPage.value)
@@ -69,7 +80,8 @@ const setPage = async (pageNumb) => {
     <div>LIST EMPLOYEE</div>
     <div class="flex items-center justify-between mb-2">
         <div>
-            <button @click="addEmployee" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button @click="addEmployee"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Add Employee
             </button>
         </div>
@@ -77,7 +89,8 @@ const setPage = async (pageNumb) => {
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn Project
             </label>
-            <select id="dropdown" v-model="project" @change="handleProjectChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="project" @change="handleProjectChange"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="project in projects" :key="project.id" :value="project.id">
                     {{ project.name }}
@@ -114,7 +127,8 @@ const setPage = async (pageNumb) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(user, index) in users" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr v-for="(user, index) in users" :key="index"
+                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ index + 1 }}
                                 </td>
@@ -131,10 +145,10 @@ const setPage = async (pageNumb) => {
                                     {{ user.role }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editUser(user)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                    <button @click="editUser(user.id)" class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
                                     </button>
-                                    <button @click="deleteUser(user)" class="text-red-600 hover:text-red-900">
+                                    <button @click="deleteUser(user.id)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>
                                 </td>
@@ -146,13 +160,15 @@ const setPage = async (pageNumb) => {
         </div>
         <!-- Phân trang -->
         <div class="pagination">
-            <button @click="setPage(currentPage - 1)" :disabled="isFirst" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
+            <button @click="setPage(currentPage - 1)" :disabled="isFirst"
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
                 Previous
             </button>
             <span>
                 {{ currentPage }} of {{ totalPages }}
             </span>
-            <button @click="setPage(currentPage + 1)" :disabled="isLast" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded">
+            <button @click="setPage(currentPage + 1)" :disabled="isLast"
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded">
                 Next
             </button>
         </div>

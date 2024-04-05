@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import api from '@/composables/api'
-
 // Mảng chứa các role cứng
 const roles = [
     { value: 'BA' },
@@ -59,7 +58,8 @@ const submit = async () => {
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn role
             </label>
-            <select id="dropdown" v-model="selected.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="selected.role"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="role in roles" :key="role.value" :value="role.value">
                     {{ role.value }}
@@ -68,7 +68,8 @@ const submit = async () => {
             <label for="userDropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn user
             </label>
-            <select id="userDropdown" v-model="selected.users" :multiple="true" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="userDropdown" v-model="selected.users" :multiple="true"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="user in users" :key="user.id" :value="user">
                     {{ user.username }}
@@ -79,17 +80,22 @@ const submit = async () => {
             <label for="usernameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Name
             </label>
-            <input type="text" id="projectNameInput" v-model="newProject.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="">
+            <input type="text" id="projectNameInput" v-model="newProject.name"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                placeholder="">
         </div>
         <div class="mb-6">
             <label for="usernameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Description
             </label>
-            <input type="text" id="projectDescriptionInput" v-model="newProject.description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="">
+            <input type="text" id="projectDescriptionInput" v-model="newProject.description"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                placeholder="">
         </div>
         <!-- Thêm mỗi input khác một id duy nhất và sử dụng v-model -->
         <div class="flex items-center justify-between">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Save
             </button>
         </div>
