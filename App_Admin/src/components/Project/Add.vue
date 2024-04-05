@@ -37,7 +37,6 @@ const submit = async () => {
         project: newProject,
         role: selected.role,
         users: selected.users.map((user) => ({ id: user.id }))
-
     }
     // console.log(projectData.users)
     try {

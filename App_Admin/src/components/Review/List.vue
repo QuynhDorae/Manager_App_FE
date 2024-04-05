@@ -1,13 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/composables/api'
-import PrimeVue from 'primevue/config';
 
-//in main.js
-import 'primevue/resources/themes/aura-light-green/theme.css'
-
-const app = createApp(App);
-app.use(PrimeVue);
 const reviews = ref([])
 const projects = ref([])
 const project = ref(null)
@@ -234,7 +228,7 @@ const setPage = async (pageNumb) => {
         <!-- Phân trang -->
         <div class="pagination">
             <button @click="setPage(currentPage - 1)" :disabled="isFirst"
-            
+
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded">
                 Previous
             </button>
