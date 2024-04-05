@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@material-tailwind/html": "^2.2.2",
     "@unocss/reset": "^0.59.0-beta.1",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
@@ -18,7 +17,7 @@
     "sass": "^1.72.0",
     "unocss": "^0.59.0-beta.1",
     "vue": "^3.4.21",
-    "vue-router": "4"
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
