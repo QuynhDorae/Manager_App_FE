@@ -10,5 +10,11 @@ export default defineNuxtConfig({
   css: [
     'primevue/resources/themes/aura-light-green/theme.css',
     '@unocss/reset/tailwind.css',
+  ],
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    }
   ]
 })

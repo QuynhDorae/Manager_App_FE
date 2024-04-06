@@ -34,7 +34,8 @@ onMounted(async () => {
         LIST PROJECT
     </h1>
     <div class="mb-2">
-        <NuxtLink :to="{ name: 'project-add' }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <NuxtLink :to="{ name: 'project-add' }"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Add Project
         </NuxtLink>
     </div>
@@ -69,7 +70,8 @@ onMounted(async () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(project, index) in projects" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr v-for="(project, index) in projects" :key="index"
+                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ index + 1 }}
                                 </td>
@@ -89,9 +91,10 @@ onMounted(async () => {
                                     {{ project.status }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editProject(project)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                    <NuxtLink :to="`/project/${project.id}`"
+                                        class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
-                                    </button>
+                                    </NuxtLink>
                                     <button @click="deleteProject(project)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>

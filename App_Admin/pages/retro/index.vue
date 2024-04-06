@@ -1,5 +1,5 @@
 <script setup>
 definePageMeta({
-    redirect: 'list'
+    redirect: '/retro/list'
 })
 </script>

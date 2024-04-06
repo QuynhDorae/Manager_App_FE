@@ -21,6 +21,8 @@ const paginationData = reactive({
 const fetchData = async (page) => {
     try {
         const res = await api.get(`/Review?page=${page}`);
+        reviews.value = res.data.content
+
 
         paginationData.currentPage = page
         paginationData.isFirst = Boolean(res.data.first)
@@ -119,7 +121,8 @@ const handleDateChange = async () => {
     </h1>
     <div class="flex items-center justify-between mb-2">
         <div class="mb-2">
-            <NuxtLink :to="{ name: 'review-add' }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <NuxtLink :to="{ name: 'review-add' }"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Add Review
             </NuxtLink>
         </div>
@@ -127,7 +130,8 @@ const handleDateChange = async () => {
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn Project
             </label>
-            <select id="dropdown" v-model="project" @change="handleProjectChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="project" @change="handleProjectChange"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="project in projects" :key="project.id" :value="project.id">
                     {{ project.name }}
@@ -138,7 +142,8 @@ const handleDateChange = async () => {
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn User
             </label>
-            <select id="dropdown" v-model="user" @change="handleUserChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="user" @change="handleUserChange"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.username }}
@@ -148,7 +153,8 @@ const handleDateChange = async () => {
         <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Chọn Review
                 Date</label>
-            <input type="date" id="dropdown" v-model="date" @change="handleDateChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <input type="date" id="dropdown" v-model="date" @change="handleDateChange"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
         </div>
     </div>
     <div class="flex flex-col">
@@ -185,7 +191,8 @@ const handleDateChange = async () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(review, index) in reviews" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr v-for="(review, index) in reviews" :key="index"
+                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ index + 1 }}
                                 </td>
@@ -207,7 +214,8 @@ const handleDateChange = async () => {
                                     {{ review.reviewDate }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editReview(review)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                    <button @click="editReview(review)"
+                                        class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
                                     </button>
                                     <button @click="deleteReview(review)" class="text-red-600 hover:text-red-900">
