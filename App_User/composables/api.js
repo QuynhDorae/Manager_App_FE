@@ -25,7 +25,7 @@ api.interceptors.response.use((response) => {
         window.location.replace('/')
     }
 
-    return Promise.reject(error);
+    return Promise.reject(err);
 });
 
 export default api;

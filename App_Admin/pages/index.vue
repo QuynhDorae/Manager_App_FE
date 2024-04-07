@@ -9,6 +9,7 @@ const submit = async () => {
         const res = await api.post('/auth/login', loginData)
         useCookie('token').value = res.data.token
         useCookie('refreshToken').value = res.data.refreshToken
+        useCookie('userId').value = res.data.userId
         alert('Logged in')
         api.defaults.headers.common["Authorization"] = `Bearer ${useCookie('token').value}`
         navigateTo('/employee/list')

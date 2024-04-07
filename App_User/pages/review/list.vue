@@ -18,9 +18,16 @@ const paginationData = reactive({
 })
 
 // Hàm để gọi API và cập nhật reviews và pageInfo
-const fetchData = async (userId) => {
+const fetchData = async () => {
+    const userId = useCookie('userId')
+
+    if (!userId.value) {
+        alert('Unauthorized')
+        return navigateTo('/')
+    }
+
     try {
-        const res = await api.get(`/Review/getall-user/${userId}`);
+        const res = await api.get(`/Review/getall-user/${userId.value}`); //nós
         reviews.value = res.data
         // paginationData.currentPage = page
         // paginationData.isFirst = Boolean(res.data.first)
@@ -33,6 +40,7 @@ const fetchData = async (userId) => {
 
 //hàm lấy tất cả user
 async function fetchUsers() {
+    
     try {
         const res = await api.get('/User/getall');
         users.value = res.data; // Gán dữ liệu vào users
@@ -42,7 +50,14 @@ async function fetchUsers() {
 }
 
 //hàm lấy review theo user
-async function fetchReviewsByUser(userId) {
+async function fetchReviewsByUser() {
+
+    const userId = useCookie('userId')
+
+    if (!userId.value) {
+        alert('Unauthorized')
+        return navigateTo('/')
+    }
     try {
         const res = await api.get(`/Review/user/${userId}`);
         reviews.value = res.data;
@@ -53,7 +68,7 @@ async function fetchReviewsByUser(userId) {
 
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(userId) //fetchReviews
+    await fetchData() //fetchReviews
     await fetchUsers()
 })
 

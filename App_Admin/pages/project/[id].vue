@@ -16,6 +16,7 @@ const currentProject = ref({
 })
 const selected = reactive({
     users: [],
+    role: null
 })
 
 async function init() {
@@ -24,7 +25,7 @@ async function init() {
         //alert('Success')
         log(res.data)
         currentProject.value = res.data
-        console.log(currentProject.value.users.map(user => user.username))
+        selected.users = res.data.users.map((user) => user.id)
 
     } catch (err) {
         alert(`Cannot get the project ${id}`)
@@ -52,11 +53,29 @@ async function fetchUsers() {
 }
 
 const submit = async () => {
-    try {
-
-    } catch (err) {
-
+    const selectedUsers = selected.users.reduce((acc, userId) => {
+        const userFromId = users.value.find((user) => user.id === userId)
+        acc.push(userFromId)
+        return acc
+    }, [])
+    const projectData = {
+        project: currentProject.value,
+        role: selected.role,
+        users: selectedUsers
     }
+    // console.log(projectData.users)
+    try {
+        await api.post('/Project/', projectData)
+        alert("update project thành công")
+
+        currentProject.value.name = ''
+        currentProject.value.description = ''
+        selected.role = null
+        selected.users = []
+        navigateTo('/project/list')
+    } catch (err) {
+        console.error('Error fetching data:', err);
+    } 
 }
 
 onMounted(async () => {
@@ -82,10 +101,9 @@ onMounted(async () => {
                 </option>
             </select>
             <label for="userDropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                Chọn user
             </label>
-            <MultiSelect v-model="currentProject.users" display="chip" :options="users" optionLabel="username"
-                placeholder="Chon" :maxSelectedLabels="10" class="w-full " />
+            <MultiSelect v-model="selected.users" display="chip" :options="users" optionLabel="username"
+                optionValue="id" placeholder="Chon" :maxSelectedLabels="10" class="w-full " />
         </div>
         <div class="mb-6">
             <label for="projectNameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">

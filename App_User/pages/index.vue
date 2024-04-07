@@ -9,7 +9,9 @@ const submit = async () => {
         const res = await api.post('/auth/login', loginData)
         useCookie('token').value = res.data.token
         useCookie('refreshToken').value = res.data.refreshToken
+        useCookie('userId').value = res.data.userId
         alert('Logged in')
+        navigateTo('/review/list')
     } catch (err) {
         alert('Error')
         log(err.response)
