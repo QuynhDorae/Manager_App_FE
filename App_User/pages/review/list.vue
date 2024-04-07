@@ -18,28 +18,19 @@ const paginationData = reactive({
 })
 
 // Hàm để gọi API và cập nhật reviews và pageInfo
-const fetchData = async (page) => {
+const fetchData = async (userId) => {
     try {
-        const res = await api.get(`/Review?page=${page}`);
-
-        paginationData.currentPage = page
-        paginationData.isFirst = Boolean(res.data.first)
-        paginationData.isLast = Boolean(res.data.last)
-        paginationData.totalPages = Number(res.data.totalPages)
+        const res = await api.get(`/Review/getall-user/${userId}`);
+        reviews.value = res.data
+        // paginationData.currentPage = page
+        // paginationData.isFirst = Boolean(res.data.first)
+        // paginationData.isLast = Boolean(res.data.last)
+        // paginationData.totalPages = Number(res.data.totalPages)
     } catch (err) {
         console.error('Error fetching data:', err.response)
     }
 }
 
-//hàm lấy tất cả project
-async function fetchProjects() {
-    try {
-        const res = await api.get('/Project/getall');
-        projects.value = res.data; // Gán dữ liệu vào users
-    } catch (err) {
-        console.error('Error fetching data:', err.response);
-    }
-}
 //hàm lấy tất cả user
 async function fetchUsers() {
     try {
@@ -49,18 +40,8 @@ async function fetchUsers() {
         console.error('Error fetching data:', err.response);
     }
 }
-//hàm lấy review theo project
-async function fetchReviewsByProject(projectId) {
-    try {
-        const res = await api.get(`/Review/project/${projectId}`);
-        console.log(projectId)
-        reviews.value = res.data;
-    } catch (err) {
-        console.error('Error fetching data:', err.response);
-    }
-}
 
-//hàm lấy review theo project
+//hàm lấy review theo user
 async function fetchReviewsByUser(userId) {
     try {
         const res = await api.get(`/Review/user/${userId}`);
@@ -69,30 +50,13 @@ async function fetchReviewsByUser(userId) {
         console.error('Error fetching data:', err.response);
     }
 }
-//hàm lấy review theo project
-async function fetchReviewsByDate(date) {
-    try {
-        const res = await api.get(`/Review/date/${date}`);
-        reviews.value = res.data;
-    } catch (err) {
-        console.error('Error fetching data:', err.response);
-    }
-}
+
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(paginationData.currentPage) //fetchReviews
-    await fetchProjects()
+    await fetchData(userId) //fetchReviews
     await fetchUsers()
 })
-// Lắng nghe sự kiện thay đổi của project
-const handleProjectChange = async () => {
-    if (project.value) {
-        await fetchReviewsByProject(project.value);
-    } else {
-        // Nếu không có dự án được chọn, tải lại danh sách người dùng ban đầu
-        // await fetchData(currentPage.value);
-    }
-}
+
 // Lắng nghe sự kiện thay đổi của user
 const handleUserChange = async () => {
     if (user.value) {
@@ -102,15 +66,7 @@ const handleUserChange = async () => {
         // await fetchData(currentPage.value);
     }
 }
-// Lắng nghe sự kiện thay đổi của date
-const handleDateChange = async () => {
-    if (user.value) {
-        await fetchReviewsByDate(date.value);
-    } else {
-        // Nếu không có dự án được chọn, tải lại danh sách người dùng ban đầu
-        // await fetchData(currentPage.value);
-    }
-}
+
 </script>
 
 <template>
@@ -119,36 +75,22 @@ const handleDateChange = async () => {
     </h1>
     <div class="flex items-center justify-between mb-2">
         <div class="mb-2">
-            <NuxtLink :to="{ name: 'review-add' }" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <NuxtLink :to="{ name: 'review-add' }"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Add Review
             </NuxtLink>
         </div>
         <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                Chọn Project
-            </label>
-            <select id="dropdown" v-model="project" @change="handleProjectChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="">Vui lòng chọn</option>
-                <option v-for="project in projects" :key="project.id" :value="project.id">
-                    {{ project.name }}
-                </option>
-            </select>
-        </div>
-        <div class="ml-4">
-            <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn User
             </label>
-            <select id="dropdown" v-model="user" @change="handleUserChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="dropdown" v-model="user" @change="handleUserChange"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.username }}
                 </option>
             </select>
-        </div>
-        <div class="ml-4">
-            <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Chọn Review
-                Date</label>
-            <input type="date" id="dropdown" v-model="date" @change="handleDateChange" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
         </div>
     </div>
     <div class="flex flex-col">
@@ -185,7 +127,8 @@ const handleDateChange = async () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(review, index) in reviews" :key="index" class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr v-for="(review, index) in reviews" :key="index"
+                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ index + 1 }}
                                 </td>
@@ -206,14 +149,15 @@ const handleDateChange = async () => {
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ review.reviewDate }}
                                 </td>
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editReview(review)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                <!-- <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <button @click="editReview(review)"
+                                        class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
                                     </button>
                                     <button @click="deleteReview(review)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -221,6 +165,6 @@ const handleDateChange = async () => {
             </div>
         </div>
         <!-- Phân trang -->
-        <Pagination v-bind="paginationData" @change="fetchData" />
+        <!-- <Pagination v-bind="paginationData" @change="fetchData" /> -->
     </div>
 </template>

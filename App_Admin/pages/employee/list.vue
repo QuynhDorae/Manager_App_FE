@@ -1,4 +1,12 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+// Phương thức để tải lại trang
+const reloadPage = () => {
+    router.go() // Điều này sẽ tải lại trang hiện tại
+}
 const users = ref([])
 const projects = ref([])
 const project = ref(null)
@@ -11,15 +19,15 @@ const paginationData = reactive({
 })
 
 // Hàm để gọi API và cập nhật users và pageInfo
-async function fetchData(page) {
+async function fetchData() {
     try {
-        const res = await api.get(`/User?page=${page}`);
-        users.value = res.data.content
-        
-        paginationData.currentPage = page
-        paginationData.isFirst = Boolean(res.data.first)
-        paginationData.isLast = Boolean(res.data.last)
-        paginationData.totalPages = Number(res.data.totalPages)
+        const res = await api.get('/User/getall');
+        users.value = res.data
+
+        // paginationData.currentPage = page
+        // paginationData.isFirst = Boolean(res.data.first)
+        // paginationData.isLast = Boolean(res.data.last)
+        // paginationData.totalPages = Number(res.data.totalPages)
     } catch (err) {
         console.error('Error fetching data:', err.response)
     }
@@ -47,7 +55,7 @@ async function fetchUsersByProject(projectId) {
 
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(paginationData.currentPage)
+    await fetchData()
     await fetchProjects()
     //  await fetchUsersByProject(projectId)
 })
@@ -67,6 +75,7 @@ const deleteUser = async (userId) => {
     try {
         const res = await api.delete(`/User/${userId}`);
         users.value = res.data;
+        await fetchData()
     } catch (err) {
         console.error('Error fetching data:', err.response);
     }
@@ -75,7 +84,7 @@ const deleteUser = async (userId) => {
 </script>
 
 <template>
-    <h1 class="text-lg uppercase">
+    <h1 class="text-lg uppercase" @click="reloadPage">
         LIST EMPLOYEE
     </h1>
     <div class="flex items-center justify-between mb-2">
@@ -149,7 +158,7 @@ const deleteUser = async (userId) => {
                                         class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
                                     </NuxtLink>
-                                    <button @click="deleteUser(user)" class="text-red-600 hover:text-red-900">
+                                    <button @click="deleteUser(user.id)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>
                                 </td>
@@ -160,6 +169,6 @@ const deleteUser = async (userId) => {
             </div>
         </div>
         <!-- Phân trang -->
-        <Pagination v-bind="paginationData" @change="fetchData" />
+        <!-- <Pagination v-bind="paginationData" @change="fetchData" /> -->
     </div>
 </template>

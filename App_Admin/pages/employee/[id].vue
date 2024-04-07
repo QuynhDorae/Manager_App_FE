@@ -26,7 +26,7 @@ async function init() {
 
 const submit = async () => {
     try {
-
+        await api.put('/User', currentEmployee.value)
     } catch (err) {
 
     }

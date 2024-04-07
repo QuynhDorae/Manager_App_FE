@@ -14,6 +14,10 @@ const users = ref([])
 const currentProject = ref({
     //users: []
 })
+const selected = reactive({
+    users: [],
+})
+
 async function init() {
     try {
         const res = await api.get(`/Project/${id}`)

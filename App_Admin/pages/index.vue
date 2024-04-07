@@ -1,6 +1,6 @@
 <script setup>
 const loginData = reactive({
-    username: 'hai',
+    username: 'xuan',
     password: 'Quynh2003#'
 })
 

@@ -18,16 +18,15 @@ const paginationData = reactive({
 })
 
 // Hàm để gọi API và cập nhật reviews và pageInfo
-const fetchData = async (page) => {
+const fetchData = async () => {
     try {
-        const res = await api.get(`/Review?page=${page}`);
-        reviews.value = res.data.content
+        const res = await api.get('/Review/getall');
+        reviews.value = res.data
 
-
-        paginationData.currentPage = page
-        paginationData.isFirst = Boolean(res.data.first)
-        paginationData.isLast = Boolean(res.data.last)
-        paginationData.totalPages = Number(res.data.totalPages)
+        // paginationData.currentPage = page
+        // paginationData.isFirst = Boolean(res.data.first)
+        // paginationData.isLast = Boolean(res.data.last)
+        // paginationData.totalPages = Number(res.data.totalPages)
     } catch (err) {
         console.error('Error fetching data:', err.response)
     }
@@ -82,7 +81,7 @@ async function fetchReviewsByDate(date) {
 }
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {
-    await fetchData(paginationData.currentPage) //fetchReviews
+    await fetchData() //fetchReviews
     await fetchProjects()
     await fetchUsers()
 })
@@ -119,37 +118,37 @@ const handleDateChange = async () => {
     <h1 class="text-lg uppercase">
         LIST REVIEW
     </h1>
-    <div class="flex items-center justify-between mb-2">
-        <div class="mb-2">
+    <div class="flex items-center justify-between ">
+        <!-- <div class="mb-2">
             <NuxtLink :to="{ name: 'review-add' }"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Add Review
             </NuxtLink>
-        </div>
+        </div> -->
         <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn Project
             </label>
             <select id="dropdown" v-model="project" @change="handleProjectChange"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="">Vui lòng chọn</option>
+                <!-- <option value="">Vui lòng chọn</option> -->
                 <option v-for="project in projects" :key="project.id" :value="project.id">
                     {{ project.name }}
                 </option>
             </select>
         </div>
-        <div class="ml-4">
+        <!-- <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn User
             </label>
             <select id="dropdown" v-model="user" @change="handleUserChange"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="">Vui lòng chọn</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
+                 <option value="">Vui lòng chọn</option> -->
+                <!-- <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.username }}
                 </option>
             </select>
-        </div>
+        </div> --> 
         <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Chọn Review
                 Date</label>
@@ -214,10 +213,10 @@ const handleDateChange = async () => {
                                     {{ review.reviewDate }}
                                 </td>
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <button @click="editReview(review)"
+                                    <!-- <button @click="editReview(review)"
                                         class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
-                                    </button>
+                                    </button> -->
                                     <button @click="deleteReview(review)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>
@@ -229,6 +228,6 @@ const handleDateChange = async () => {
             </div>
         </div>
         <!-- Phân trang -->
-        <Pagination v-bind="paginationData" @change="fetchData" />
+        <!-- <Pagination v-bind="paginationData" @change="fetchData" /> -->
     </div>
 </template>

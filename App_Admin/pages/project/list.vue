@@ -1,4 +1,12 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+// Phương thức để tải lại trang
+const reloadPage = () => {
+    router.go() // Điều này sẽ tải lại trang hiện tại
+}
 const projects = ref([])
 // Biến để lưu trữ thông tin phân trang
 const paginationData = reactive({
@@ -26,11 +34,20 @@ async function fetchData(page) {
 onMounted(async () => {
     await fetchData(paginationData.currentPage)
 })
-
+//xóa project
+const deleteProject = async (projectId) => {
+    try {
+        const res = await api.delete(`/Project/${projectId}`);
+        projects.value = res.data;
+        await fetchData()
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
+    }
+}
 </script>
 
 <template>
-    <h1 class="text-lg uppercase">
+    <h1 class="text-lg uppercase" @click="reloadPage">
         LIST PROJECT
     </h1>
     <div class="mb-2">
@@ -95,7 +112,7 @@ onMounted(async () => {
                                         class="text-indigo-600 hover:text-indigo-900 mr-4">
                                         Edit
                                     </NuxtLink>
-                                    <button @click="deleteProject(project)" class="text-red-600 hover:text-red-900">
+                                    <button @click="deleteProject(project.id)" class="text-red-600 hover:text-red-900">
                                         Delete
                                     </button>
                                 </td>

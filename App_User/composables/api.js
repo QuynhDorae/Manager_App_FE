@@ -4,9 +4,9 @@ const api = axios.create({
     baseURL: 'http://localhost:8081/api'
 })
 
-api.defaults.headers.common[ "Content-Type" ] = "application/json";
-api.defaults.headers.common[ "Accept" ] = "application/json";
-api.defaults.headers.common["Authorization"] = `Bearer ${useCookie('token').value}`;
+api.defaults.headers.common["Content-Type"] = "application/json";
+api.defaults.headers.common["Accept"] = "application/json";
+// api.defaults.headers.common[ "Authorization" ] = `Bearer ${useCookie('token').value}`;
 
 api.interceptors.request.use(async (config) => {
     const token = useCookie('token')
@@ -24,6 +24,7 @@ api.interceptors.response.use((response) => {
         alert('Unauthenticated')
         window.location.replace('/')
     }
+
     return Promise.reject(error);
 });
 

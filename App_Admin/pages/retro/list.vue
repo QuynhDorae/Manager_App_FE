@@ -1,4 +1,12 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+// Phương thức để tải lại trang
+const reloadPage = () => {
+    router.go() // Điều này sẽ tải lại trang hiện tại
+}
 const retros = ref([])
 // Biến để lưu trữ thông tin phân trang
 const paginationData = reactive({
@@ -26,7 +34,16 @@ async function fetchData(page) {
 onMounted(async () => {
     await fetchData(paginationData.currentPage)
 })
-
+//xóa retro
+const deleteRetro = async (retroId) => {
+    try {
+        const res = await api.delete(`/Retro/${retroId}`);
+        retros.value = res.data;
+        await fetchData()
+    } catch (err) {
+        console.error('Error fetching data:', err.response);
+    }
+}
 </script>
 
 <template>
@@ -90,7 +107,7 @@ onMounted(async () => {
                                             class="text-indigo-600 hover:text-indigo-900 mr-4">
                                             Edit
                                         </NuxtLink>
-                                        <button @click="deleteRetro(retro)" class="text-red-600 hover:text-red-900">
+                                        <button @click="deleteRetro(retro.id)" class="text-red-600 hover:text-red-900">
                                             Delete
                                         </button>
                                     </td>

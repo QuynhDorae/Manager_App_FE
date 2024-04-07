@@ -4,7 +4,7 @@ const { id } = route.params
 const projects = ref([])
 //const project = ref();
 const currentRetro = ref({
-    project:{}
+    project: {}
 })
 
 async function fetchProjects() {
@@ -31,7 +31,7 @@ async function init() {
 
 const submit = async () => {
     try {
-
+        await api.put('/Retro', currentRetro.value)
     } catch (err) {
 
     }
