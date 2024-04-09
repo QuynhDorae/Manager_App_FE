@@ -17,7 +17,7 @@ const roles = [
 
 async function init() {
     try {
-        const res = await api.get(`/User/${id}`)
+        const res = await api.get(`/User/user/${id}`)
         // alert('Success')
         log(res.data)
         currentEmployee.value = res.data

@@ -21,7 +21,7 @@ const selected = reactive({
 
 async function init() {
     try {
-        const res = await api.get(`/Project/${id}`)
+        const res = await api.get(`/Project/project/${id}`)
         //alert('Success')
         log(res.data)
         currentProject.value = res.data

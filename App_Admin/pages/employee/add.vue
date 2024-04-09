@@ -3,6 +3,8 @@ const route = useRoute()
 const { id } = route.params
 
 const accounts = ref([])
+const account = ref(null)
+const idAccount = ref()
 const newEmployee = reactive({
     username: null,
     email: null,
@@ -17,8 +19,7 @@ const roles = [
 // Hàm để gửi dữ liệu đến API
 async function submit() {
     try {
-        const res = await api.post('/User',
-            newEmployee)
+        const res = await api.post('/User', newEmployee)
         // alert('Success')
         navigateTo('/employee/list')
         console.log('Success:', res.data)
@@ -36,8 +37,30 @@ async function fetchDataAccount() {
         console.error('Error fetching data:', err.response)
     }
 }
+async function handleUsernameChange() {
+    const selectedUsernameId = newEmployee.username
+    // Lấy ra id của username được chọn
+    const selectedAccountId = accounts.value.find(item => item.username === selectedUsernameId)?.id
+    // Gán id của tài khoản vào currentEmployee
+    idAccount.value = selectedAccountId
+    getByIdAccount(idAccount.value)
+    console.log(idAccount.value)
+}
+async function getByIdAccount(id) {
+    try {
+        const res = await api.get(`/Account/${id}`)
+        // alert('Success')
+        log(res.data)
+        account.value = res.data
+        console.log(account)
+
+    } catch (err) {
+
+    }
+}
 onMounted(async () => {
     await fetchDataAccount()
+    await handleUsernameChange()
 })
 </script>
 <template>
@@ -60,10 +83,10 @@ onMounted(async () => {
         <label for="role-dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
             Chọn username
         </label>
-        <select id="role-dropdown" v-model="newEmployee.username"
+        <select id="role-dropdown" v-model="newEmployee.username" @change="handleUsernameChange"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="">Vui lòng chọn</option>
-            <option v-for="(item, index) in accounts">
+            <option v-for="(item, index) in accounts" :key="item.id">
                 {{ item.username }}
             </option>
         </select>
@@ -81,8 +104,8 @@ onMounted(async () => {
         <select id="role-dropdown" v-model="newEmployee.email"
             class="mb-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="">Vui lòng chọn</option>
-            <option v-for="(item1, index) in accounts">
-                {{ item1.email }}
+            <option>
+                {{ account?.email }}
             </option>
         </select>
         <!-- Thêm mỗi input khác một id duy nhất và sử dụng v-model -->

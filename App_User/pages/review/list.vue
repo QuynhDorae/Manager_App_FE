@@ -38,16 +38,16 @@ const fetchData = async () => {
     }
 }
 
-//hàm lấy tất cả user
-async function fetchUsers() {
-    
-    try {
-        const res = await api.get('/User/getall');
-        users.value = res.data; // Gán dữ liệu vào users
-    } catch (err) {
-        console.error('Error fetching data:', err.response);
-    }
-}
+// //hàm lấy tất cả user
+// async function fetchUsers() {
+
+//     try {
+//         const res = await api.get('/User/getall');
+//         users.value = res.data; // Gán dữ liệu vào users
+//     } catch (err) {
+//         console.error('Error fetching data:', err.response);
+//     }
+// }
 
 //hàm lấy review theo user
 async function fetchReviewsByUser() {
@@ -95,7 +95,7 @@ const handleUserChange = async () => {
                 Add Review
             </NuxtLink>
         </div>
-        <div class="ml-4">
+        <!-- <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn User
             </label>
@@ -106,7 +106,7 @@ const handleUserChange = async () => {
                     {{ user.username }}
                 </option>
             </select>
-        </div>
+        </div> -->
     </div>
     <div class="flex flex-col">
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
@@ -135,9 +135,6 @@ const handleUserChange = async () => {
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     ReviewDate
-                                </th>
-                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                    Action
                                 </th>
                             </tr>
                         </thead>

@@ -18,7 +18,7 @@ async function fetchProjects() {
 
 async function init() {
     try {
-        const res = await api.get(`/Retro/${id}`)
+        const res = await api.get(`/Retro/retro/${id}`)
         //alert('Success')
         log(res.data)
         currentRetro.value = res.data
