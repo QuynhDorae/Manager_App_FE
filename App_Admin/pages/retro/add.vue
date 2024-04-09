@@ -28,6 +28,7 @@ const submit = async () => {
     try {
         await api.post('/Retro/', newRetro)
         alert("add retro thành công")
+        navigateTo('/retro/list')
     } catch (err) {
         console.error('Error creating new retro:', err.response);
     }

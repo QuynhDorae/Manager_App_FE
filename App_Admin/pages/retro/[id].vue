@@ -32,6 +32,8 @@ async function init() {
 const submit = async () => {
     try {
         await api.put('/Retro', currentRetro.value)
+        alert('update thành công')
+        navigateTo('/retro/list')
     } catch (err) {
 
     }

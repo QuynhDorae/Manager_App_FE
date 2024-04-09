@@ -15,6 +15,7 @@ async function submit() {
     try {
         const res = await api.post('/User', newEmployee)
         alert('Success')
+        navigateTo('/employee/list')
         console.log('Success:', res.data)
     } catch (err) {
         alert('Error')

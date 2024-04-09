@@ -18,6 +18,7 @@ async function init() {
         alert('Success')
         log(res.data)
         currentEmployee.value = res.data
+        navigateTo('/employee/list')
     } catch (err) {
         alert(`Cannot get the employee ${id}`)
         log(err.response)

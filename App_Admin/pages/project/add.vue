@@ -44,6 +44,7 @@ const submit = async () => {
         newProject.description = ''
         selected.role = null
         selected.users = []
+        navigateTo('/project/list')
     } catch (err) {
         console.error('Error fetching data:', err.response);
     }
