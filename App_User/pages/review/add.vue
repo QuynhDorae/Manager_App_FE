@@ -32,6 +32,8 @@ const fetchProjectByUser = async () => {
 //lấy ra projectId khi chọn project
 const handleProjectSelection = async (project) => {
     const projectId = project
+    retro.value = null
+    user.value = null
     console.log(projectId)
     fetchRetroByProject(projectId)
     if (handleRetroSelection) {
@@ -56,6 +58,7 @@ const fetchRetroByProject = async (projectId) => {
 const handleRetroSelection = async (retro) => {
 
     const retroId = retro
+    user.value = null
     console.log(retroId)
     if (retroId != null) {
         //fetchUserByProject(retroId)
@@ -89,6 +92,7 @@ const submit = async () => {
     try {
         await api.post('/Retro/', newRetro)
         alert("add retro thành công")
+        navigateTo('/review/list')
     } catch (err) {
         console.error('Error creating new retro:', err.response);
     }
@@ -100,7 +104,7 @@ const submit = async () => {
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn Project
             </label>
-            <select id="dropdown" v-model="project" @click="handleProjectSelection(project)"
+            <select id="dropdown" v-model="project" @change="handleProjectSelection(project)"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">Vui lòng chọn</option>
                 <option v-for="project in projects" :key="project.id" :value="project.id">
@@ -112,7 +116,7 @@ const submit = async () => {
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Chọn Retro
             </label>
-            <select id="dropdown" v-model="retro" @click="handleRetroSelection(retro)"
+            <select id="dropdown" v-model="retro" @change="handleRetroSelection(retro)"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <!-- <option value="">Vui lòng chọn</option> -->
                 <option v-for="retro in retros" :key="retro.id" :value="retro.id">

@@ -1,10 +1,14 @@
 <script setup>
+const route = useRoute()
+const { id } = route.params
+
+const accounts = ref([])
 const newEmployee = reactive({
     username: null,
-    password: null,
     email: null,
     role: null
 })
+//const username=accounts.value.map((username)=>({id:username.id}))
 // Mảng chứa các role cứng
 const roles = [
     { value: 'USER' },
@@ -13,16 +17,28 @@ const roles = [
 // Hàm để gửi dữ liệu đến API
 async function submit() {
     try {
-        const res = await api.post('/User', newEmployee)
-        alert('Success')
+        const res = await api.post('/User',
+            newEmployee)
+        // alert('Success')
         navigateTo('/employee/list')
         console.log('Success:', res.data)
     } catch (err) {
-        alert('Error')
+        // alert('Error')
         console.error('Error:', err.response)
     }
 }
 
+async function fetchDataAccount() {
+    try {
+        const res = await api.get('/Account/getall');
+        accounts.value = res.data
+    } catch (err) {
+        console.error('Error fetching data:', err.response)
+    }
+}
+onMounted(async () => {
+    await fetchDataAccount()
+})
 </script>
 <template>
     <h1 class="text-lg uppercase">
@@ -41,14 +57,16 @@ async function submit() {
                 </option>
             </select>
         </div>
-        <div class="mb-6">
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                Username
-            </label>
-            <input type="text" id="username" v-model="newEmployee.username"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="">
-        </div>
+        <label for="role-dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+            Chọn username
+        </label>
+        <select id="role-dropdown" v-model="newEmployee.username"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="">Vui lòng chọn</option>
+            <option v-for="(item, index) in accounts">
+                {{ item.username }}
+            </option>
+        </select>
         <div class="mb-6">
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
                 Password
@@ -57,14 +75,16 @@ async function submit() {
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 placeholder="">
         </div>
-        <div class="mb-6">
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
-                Email
-            </label>
-            <input type="email" id="email" v-model="newEmployee.email"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="">
-        </div>
+        <label for="role-dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+            Chọn email
+        </label>
+        <select id="role-dropdown" v-model="newEmployee.email"
+            class="mb-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="">Vui lòng chọn</option>
+            <option v-for="(item1, index) in accounts">
+                {{ item1.email }}
+            </option>
+        </select>
         <!-- Thêm mỗi input khác một id duy nhất và sử dụng v-model -->
         <div class="flex items-center justify-between">
             <button type="submit"

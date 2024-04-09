@@ -24,6 +24,9 @@ api.interceptors.response.use((response) => {
         alert('Unauthenticated')
         window.location.replace('/')
     }
+    if (err.response && err.response.status === 403) {
+            alert('Không đủ quyền')
+    }
 
     return Promise.reject(err);
 });
