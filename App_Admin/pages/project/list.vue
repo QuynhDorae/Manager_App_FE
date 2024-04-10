@@ -19,7 +19,7 @@ const paginationData = reactive({
 // Hàm để gọi API và cập nhật projects và pageInfo
 async function fetchData(page) {
     try {
-        const res = await api.get(`/Project?page=${page}`);
+        const res = await api.get(`/Project/admin/?page=${page}`);
         projects.value = res.data.content
 
         paginationData.currentPage = page
@@ -37,7 +37,7 @@ onMounted(async () => {
 //xóa project
 const deleteProject = async (projectId) => {
     try {
-        const res = await api.delete(`/Project/${projectId}`);
+        const res = await api.delete(`/Project/admin/${projectId}`);
         projects.value = res.data;
         await fetchData()
     } catch (err) {

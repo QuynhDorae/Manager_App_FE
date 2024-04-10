@@ -50,21 +50,21 @@ const fetchData = async () => {
 // }
 
 //hàm lấy review theo user
-async function fetchReviewsByUser() {
+// async function fetchReviewsByUser() {
 
-    const userId = useCookie('userId')
+//     const userId = useCookie('userId')
 
-    if (!userId.value) {
-        alert('Unauthorized')
-        return navigateTo('/')
-    }
-    try {
-        const res = await api.get(`/Review/user/${userId}`);
-        reviews.value = res.data;
-    } catch (err) {
-        console.error('Error fetching data:', err.response);
-    }
-}
+//     if (!userId.value) {
+//         alert('Unauthorized')
+//         return navigateTo('/')
+//     }
+//     try {
+//         const res = await api.get(`/Review/user/${userId}`);
+//         reviews.value = res.data;
+//     } catch (err) {
+//         console.error('Error fetching data:', err.response);
+//     }
+// }
 
 // Gọi fetchData() khi component được mounted
 onMounted(async () => {

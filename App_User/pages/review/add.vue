@@ -90,8 +90,8 @@ onMounted(async () => {
 });
 const submit = async () => {
     try {
-        await api.post('/Retro/', newRetro)
-        alert("add retro thành công")
+        await api.post('/Review/', newReview)
+        alert("add review thành công")
         navigateTo('/review/list')
     } catch (err) {
         console.error('Error creating new retro:', err.response);

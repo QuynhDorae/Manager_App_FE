@@ -21,7 +21,7 @@ const paginationData = reactive({
 // Hàm để gọi API và cập nhật users và pageInfo
 async function fetchData() {
     try {
-        const res = await api.get('/User/getall');
+        const res = await api.get('/User/admin-pm/getall');
         users.value = res.data
 
         // paginationData.currentPage = page
@@ -45,7 +45,7 @@ async function fetchProjects() {
 //hàm lấy user theo project
 async function fetchUsersByProject(projectId) {
     try {
-        const res = await api.get(`/User/filter-project/${projectId}`);
+        const res = await api.get(`/User/admin/filter-project/${projectId}`);
         console.log(projectId)
         users.value = res.data;
     } catch (err) {
@@ -73,7 +73,7 @@ const handleProjectChange = async () => {
 //xóa user
 const deleteUser = async (userId) => {
     try {
-        const res = await api.delete(`/User/${userId}`);
+        const res = await api.delete(`/User/admin/${userId}`);
         users.value = res.data;
         await fetchData()
     } catch (err) {

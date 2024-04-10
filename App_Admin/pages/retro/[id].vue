@@ -9,7 +9,7 @@ const currentRetro = ref({
 
 async function fetchProjects() {
     try {
-        const res = await api.get('/Project/getall');
+        const res = await api.get('/Project/admin/getall');
         projects.value = res.data; // Gán dữ liệu vào users
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -18,7 +18,7 @@ async function fetchProjects() {
 
 async function init() {
     try {
-        const res = await api.get(`/Retro/retro/${id}`)
+        const res = await api.get(`/Retro/admin/${id}`)
         //alert('Success')
         log(res.data)
         currentRetro.value = res.data
@@ -31,7 +31,7 @@ async function init() {
 
 const submit = async () => {
     try {
-        await api.put('/Retro', currentRetro.value)
+        await api.put('/Retro/admin', currentRetro.value)
         alert('update thành công')
         navigateTo('/retro/list')
     } catch (err) {

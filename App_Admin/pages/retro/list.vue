@@ -19,7 +19,7 @@ const paginationData = reactive({
 // Hàm để gọi API và cập nhật retros và pageInfo
 async function fetchData(page) {
     try {
-        const res = await api.get(`/Retro?page=${page}`);
+        const res = await api.get(`/Retro/admin/?page=${page}`);
         retros.value = res.data.content
 
         paginationData.currentPage = page
@@ -37,7 +37,7 @@ onMounted(async () => {
 //xóa retro
 const deleteRetro = async (retroId) => {
     try {
-        const res = await api.delete(`/Retro/${retroId}`);
+        const res = await api.delete(`/Retro/admin/${retroId}`);
         retros.value = res.data;
         await fetchData()
     } catch (err) {

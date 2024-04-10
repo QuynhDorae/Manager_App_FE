@@ -17,7 +17,7 @@ const roles = [
 
 async function init() {
     try {
-        const res = await api.get(`/User/user/${id}`)
+        const res = await api.get(`/User/admin/user/${id}`)
         // alert('Success')
         log(res.data)
         currentEmployee.value = res.data
@@ -31,7 +31,7 @@ async function init() {
 
 const submit = async () => {
     try {
-        await api.put('/User', currentEmployee.value)
+        await api.put('/User/admin', currentEmployee.value)
         navigateTo('/employee/list')
     } catch (err) {
 

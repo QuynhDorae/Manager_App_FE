@@ -20,7 +20,7 @@ const paginationData = reactive({
 // Hàm để gọi API và cập nhật reviews và pageInfo
 const fetchData = async () => {
     try {
-        const res = await api.get('/Review/getall');
+        const res = await api.get('/Review/admin/getall');
         reviews.value = res.data
 
         // paginationData.currentPage = page
@@ -35,7 +35,7 @@ const fetchData = async () => {
 //hàm lấy tất cả project
 async function fetchProjects() {
     try {
-        const res = await api.get('/Project/getall');
+        const res = await api.get('/Project/admin/getall');
         projects.value = res.data; // Gán dữ liệu vào users
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -44,7 +44,7 @@ async function fetchProjects() {
 //hàm lấy tất cả user
 async function fetchUsers() {
     try {
-        const res = await api.get('/User/getall');
+        const res = await api.get('/User/admin/getall');
         users.value = res.data; // Gán dữ liệu vào users
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -53,7 +53,7 @@ async function fetchUsers() {
 //hàm lấy review theo project
 async function fetchReviewsByProject(projectId) {
     try {
-        const res = await api.get(`/Review/project/${projectId}`);
+        const res = await api.get(`/Review/admin/project/${projectId}`);
         console.log(projectId)
         reviews.value = res.data;
     } catch (err) {
@@ -64,7 +64,7 @@ async function fetchReviewsByProject(projectId) {
 //hàm lấy review theo project
 async function fetchReviewsByUser(userId) {
     try {
-        const res = await api.get(`/Review/user/${userId}`);
+        const res = await api.get(`/Review/admin/user/${userId}`);
         reviews.value = res.data;
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -73,7 +73,7 @@ async function fetchReviewsByUser(userId) {
 //hàm lấy review theo project
 async function fetchReviewsByDate(date) {
     try {
-        const res = await api.get(`/Review/date/${date}`);
+        const res = await api.get(`/Review/admin/date/${date}`);
         reviews.value = res.data;
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -144,11 +144,11 @@ const handleDateChange = async () => {
             <select id="dropdown" v-model="user" @change="handleUserChange"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                  <option value="">Vui lòng chọn</option> -->
-                <!-- <option v-for="user in users" :key="user.id" :value="user.id">
+        <!-- <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.username }}
                 </option>
             </select>
-        </div> --> 
+        </div> -->
         <div class="ml-4">
             <label for="dropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Chọn Review
                 Date</label>

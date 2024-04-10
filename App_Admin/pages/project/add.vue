@@ -20,7 +20,7 @@ const selected = reactive({
 
 async function fetchUsers() {
     try {
-        const res = await api.get('/User/getall');
+        const res = await api.get('/User/admin-pm/getall');
         users.value = res.data; // Gán dữ liệu vào users
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -38,7 +38,7 @@ const submit = async () => {
     }
     // console.log(projectData.users)
     try {
-        await api.post('/Project/', projectData)
+        await api.post('/Project/admin', projectData)
         alert("add project thành công")
         newProject.name = ''
         newProject.description = ''

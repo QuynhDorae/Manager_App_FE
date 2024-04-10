@@ -10,7 +10,7 @@ const newRetro = reactive({
 
 async function fetchProjects() {
     try {
-        const res = await api.get('/Project/getall');
+        const res = await api.get('/Project/admin/getall');
         projects.value = res.data; // Gán dữ liệu vào users
     } catch (err) {
         console.error('Error fetching data:', err.response);
@@ -26,7 +26,7 @@ onMounted(async () => {
 
 const submit = async () => {
     try {
-        await api.post('/Retro/', newRetro)
+        await api.post('/Retro/admin', newRetro)
         alert("add retro thành công")
         navigateTo('/retro/list')
     } catch (err) {
