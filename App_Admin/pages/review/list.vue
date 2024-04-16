@@ -61,10 +61,10 @@ async function fetchReviewsByProject(projectId) {
     }
 }
 
-//hàm lấy review theo project
+//hàm lấy review theo user
 async function fetchReviewsByUser(userId) {
     try {
-        const res = await api.get(`/Review/admin/user/${userId}`);
+        const res = await api.get(`/Review/user/${userId}`);
         reviews.value = res.data;
     } catch (err) {
         console.error('Error fetching data:', err.response);

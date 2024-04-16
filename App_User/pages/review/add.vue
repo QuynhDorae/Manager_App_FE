@@ -65,7 +65,7 @@ const handleRetroSelection = async (retro) => {
     }
 
 }
-//lấy user theo project và user(login)
+//lấy user theo project và user(login) mà chưa được đánh giá
 const fetchUserByProject = async (projectId) => {
     const userId = useCookie('userId')
 

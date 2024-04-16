@@ -84,6 +84,7 @@ const deleteUser = async (userId) => {
 </script>
 
 <template>
+    
     <h1 class="text-lg uppercase" @click="reloadPage">
         LIST EMPLOYEE
     </h1>
