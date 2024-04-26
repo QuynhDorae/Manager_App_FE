@@ -36,9 +36,12 @@ const submit = async () => {
         role: selected.role,
         users: selected.users.map((user) => ({ id: user.id }))
     }
-    // console.log(projectData.users)
+    const emailData = {
+        to: selected.users.map(user => user.email)
+    }
     try {
         await api.post('/Project/admin', projectData)
+        await api.post('/email', emailData)
         alert("add project thành công")
         newProject.name = ''
         newProject.description = ''

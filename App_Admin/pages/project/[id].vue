@@ -63,9 +63,11 @@ const submit = async () => {
         role: selected.role,
         users: selectedUsers
     }
-    // console.log(projectData.users)
+
+    console.log(emailData)
     try {
         await api.post('/Project/admin', projectData)
+        
         alert("update project thành công")
 
         currentProject.value.name = ''
